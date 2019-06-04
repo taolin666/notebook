@@ -11,25 +11,26 @@
       <button style="background:#0f0;height:50px;width:100px;" @click="addEvent()">添加费用</button>
       <button style="background:#0f0;height:50px;width:100px;" @click="DetailEvent()">{{flagText}}费用详情</button>
     </div>
-    <h3 style="margin-bottom:30px;">共花费{{num}}钱</h3>
+    
     <div v-show="flag">
       <h4>费用详情</h4>
       <table border="1px;width:100%">
         <thead>
           <tr>  
             <th>费用</th>
-            <th>花费时间</th>
             <th>花费用途</th>
+            <th>花费时间</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>333</td>
-            <td>4444</td>
-            <td>222</td>
+          <tr v-for="(item, index) in list" :key="index">
+            <td>{{item.money}}</td>
+            <td>{{item.moneyGoto}}</td>
+            <td>{{item.time}}</td>
           </tr>
         </tbody>
       </table>
+      <h3 style="margin-bottom:30px;">共花费{{num}}钱</h3>
     </div>
     
   </div>
@@ -40,6 +41,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      list: [],
       moneyGoto: '',
       money: '',
       msg: 'vue记事本案例（类todoList）',
@@ -48,18 +50,55 @@ export default {
       flagText: '显示'
     }
   },
+  computed() {},
   methods: {
     getDate(type = '-') {
       let Time = new Date()
       function istenNum(DateNum) {
         return DateNum >= 10 ? DateNum : '0' + DateNum
       }
-      return Time.getFullYear() + type + istenNum(Time.getMonth()) + type + Time.getDate() + ' ' + istenNum(Time.getHours()) + type + istenNum(Time.getMinutes()) + type + istenNum(Time.getSeconds())
+      return Time.getFullYear() + type + istenNum(Time.getMonth()+1) + type + istenNum(Time.getDate()) + ' ' + istenNum(Time.getHours()) + ':' + istenNum(Time.getMinutes()) + ':' + istenNum(Time.getSeconds())
     },
-    addEvent() {},
+    addEvent() {
+      this.axios.get('http://localhost:8081/add', {
+           params: {
+            moneyGoto: this.moneyGoto,
+            money: this.money,
+            time: this.getDate()
+          }
+          // time: this.getDate()
+      }).then(res => {
+        console.log(res)
+        if (res.data === 'ok') {
+          this.moneyGoto = ''
+          this.money = ''
+        }
+      })
+    },
     DetailEvent() {
       this.flag = !this.flag
       this.flagText = this.flag ? '隐藏' : '显示'
+      this.axios.post('http://localhost:8081/query')
+      .then( res=> {
+        console.log(res)
+        if (res.status === 200 && res.data) {
+          this.list = res.data
+          this.getSum()
+        }
+      })
+    },
+    getSum() {
+      this.num = 0
+      console.log(this.list)
+      let arr = []
+      this.list.forEach(item => {
+        arr.push(Number(item.money))
+      })
+      console.log('arr', arr)
+      for(var i=0;i<arr.length;i++) {
+          this.num += arr[i]
+        }
+      console.log('a', this.num)
     }
   }
 }
