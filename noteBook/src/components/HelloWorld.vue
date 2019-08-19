@@ -1,5 +1,6 @@
 <template>
   <div class="noteBook">
+  <button @click="notify" style>click me test notify组件</button>
     <div style="margin-bottom:20px;">
       <h1>{{ msg }}</h1>
       <h1>{{ getDate() }}</h1>
@@ -31,6 +32,7 @@
         </tbody>
       </table>
       <h3 style="margin-bottom:30px;">共花费{{num}}钱</h3>
+      
     </div>
     
   </div>
@@ -50,8 +52,20 @@ export default {
       flagText: '显示'
     }
   },
-  computed() {},
+  computed: {},
+  mounted () {
+    // this.$notify({
+    //   content: 'test$notify',
+    //   btn: 'close'
+    // })
+  },
   methods: {
+    notify() {
+      this.$notify({
+        content: 'test$notify',
+        btn: 'close'
+      })
+    },
     getDate(type = '-') {
       let Time = new Date()
       function istenNum(DateNum) {
