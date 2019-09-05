@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>projectCode</title>
+</head>
+
+<body>
+  <div id="searchUl"></div>
+</body>
+
+</html>
+<script>
+  // serviceKey () {
+  //   if (this.timer) {
+  //     clearTimeout(this.timer)
+  //   }
+  //   this.timer = setTimeout(() => {
+  //     const result = []
+  //     this.groupPrefixList.forEach((value, index) => {
+  //       if (value.groupName.indexOf(this.serviceKey.toUpperCase()) > -1) {
+  //         result.push(index)
+  //       }
+  //     })
+  //     if (result.length > 0) {
+  //       document.getElementById('searchUl').scrollTop = this.$refs.searchLi[[result[0]]].offsetTop
+  //     }
+  //   }, 100)
+  // }
+
+
+  // Vue.set()
+  // :class="{'blue' : item.flag}"   @click.prevent="selectedLi(item)"
+  //     selectedLi(item) {
+  //       let onOff = item.flag
+  //       Vue.set(item, 'flag', !onOff)
+  //     },
+
+// 上传文件
+//   <a href="javascript:" class="Errbtn Errbtn--orange" @click="leadingIn"></a>
+//   <input type="file" id="fileInput" class="uploadHide" v-on:change="fileUpload">
+//      leadingIn() {
+//         $('.uploadHide').click()
+//       },
+//       fileUpload() {
+//         let file = $('#fileInput')[0].files[0]
+//         var that = this
+//         this.domain_fileUploadApi({file: file}).then(function(res) {
+//           if (res.code === 0 || res.code === '0') {
+//             that.domainList()
+//           } else {
+//             u.alertErrorBox(that, res.data)
+//           }
+//         })
+//       },
+
+// 导出scv文件
+  // scv(e) {
+  //   let content = []
+  //   let data = []
+  //   fns().forEach(item => {
+  //     item.sub.forEach(subItem => {
+  //       content.push([subItem.text, subItem.permCode])
+  //     })
+  //   })
+  //   content.forEach(contentItem => {
+  //     data.push(contentItem.join(','))
+  //   })
+  //   var BOM = '\uFEFF';
+  //   var blob = new Blob([BOM + data.join('\r\n')], {
+  //     type: 'text/csv'
+  //   });
+  //   e.target.href = URL.createObjectURL(blob)
+  // }
+
+  //  pointer - events: none
+  //             当加了这个属性， 此按钮或点击时， 没有反应
+
+//   width: calc(expression)
+      // calc是css3新增的 举例子： li {
+      // float: left;
+      // width: 33.3333 % ;
+      // height: 50 px;
+      // padding: 10 px;
+      // margin - right: 10 px;
+      // background: #FF6666;
+      // border: 5 px solid# DAC8A7;
+      // }
+      // 上面的css中盒子不会平分三分之一， 而是会有一个掉下去 修改代码： li {
+      // float: left;
+      // //width:33.3333%;
+      // height: 50 px;
+      // padding: 10 px;
+      // margin - right: 15 px;
+      // background: #FF6666;
+      // border: 5 px solid# DAC8A7;
+      // width: calc(33.3333 % -(10 px + 5 px) * 2 - 15 px) //  <===重点
+      // }
+      // 上面的两个代码的主要区别就是calc可以计算
+</script>
