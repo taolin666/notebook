@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>继承</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  // 1  =>原型链继承 
+  //优点： 可复用型高，可在prototype里一直添加方法
+  //缺点：当foo2修改了父级foo1的属性时，父级foo1的属性就变了
+  function foo1() {
+    this.foo1property = true
+  };
+  foo1.prototype.getFoo1Value = function () {
+    return this.foo1property
+  }
+  function foo2() {
+    this.foo2property = false
+  }
+  foo2.prototype = new foo1()
+  foo2.prototype.getFoo2Value = function () {
+    return this.foo2property
+  }
+  // 缺点：当foo2修改了父级foo1的属性时，父级foo1的属性就变了
+    // foo2.prototype.getFoo1Value = function () {
+    //   return 'fixedfoo1Value'
+    // }
+  let foo3 = new foo2()
+  console.log(foo3.getFoo1Value())
+// =====================================================================================
+  // 2  => 构造函数继承 
+  // 优点： 解决了原型链继承的缺点
+  // 缺点： 不可复用性
+  function call1() {
+    this.obj = {
+      name: 'taolin',
+      age: 18
+    }
+  }
+  function call2() {
+    call1.call(this)
+    // 缺点：在构造函数内定义的话，会导致后面的实例都是age：28
+    // this.obj.age = 28
+  }
+  let call3 = new call2()
+  call3.obj.name = 'zs'
+  console.log(call3.obj) //zs
+  let call4 = new call2()
+  call4.obj.name = 'ls'
+  console.log(call4.obj) //ls
+
+  // =================================================================
+  // 3 => 组合继承 
+  // 优点： 把原型链继承和构造函数继承结合其优点  
+  // 缺点： 2次实例，：第一次实例化father，第二次实例化son
+  function father(name) {
+    this.name = name
+    this.friends = [1,2,3]
+  }
+  father.prototype.getValue = function () {
+    console.log(this.name)
+  }
+  function son(name, age) {
+    father.call(this, name)
+    this.age = age
+  }
+  son.prototype = new father()
+  son.prototype.constructor = son
+  son.prototype.getAge = function () {
+    console.log(this.age)
+  }
+  let instance = new son('zs', 20)
+  instance.friends.push(4)
+  instance.getValue() // zs
+  instance.getAge() //20
+  console.log(instance.friends) //[1,2,3,4]
+
+  let instance2 = new son('tq', 30)
+  instance2.friends.push(9)
+  instance2.getValue() // tq
+  instance2.getAge() //30
+  console.log(instance2.friends) //[1,2,3,9]
+
+  // =====================================================================
+  // 4 => 寄生式继承
+  // 缺点： 和构造函数继承一样不可以复用
+  function createAother(ariginal) {
+    let clone = Object(ariginal)
+    clone.sayHi = function () {
+      console.log('可以添加多个方法，例如sayHi这个方法一样')
+    }
+    return clone
+  }
+  let person = {
+    name: 'taolin',
+    friends: ['a','b','c']
+  }
+  let instanceAother = createAother(person)
+  instanceAother.sayHi()
+  console.log(instanceAother)
+  // ========================================================================
+  // 5 => 寄生组合继承 最理想继承方法
+  function a(sub, Super) {
+    var p = Object(Super.prototype) //创建对象
+    p.constructor = p //增强对象
+    sub.prototype = p// 指定对象
+  }
+  function Super(name) {
+    this.name = name
+    this.colors = ['red', 'blue', 'green']
+  }
+  Super.prototype.sayName = function () {
+    console.log(this.name)
+  }
+  function sub(name, age) {
+    Super.call(this, name)
+    this.age = age
+  }
+  a(sub, Super)
+  sub.prototype.sayAge = function() {
+    console.log(this.age)
+  }
+  let sub1 = new sub('wb', 77)
+  console.log(sub1.sayAge())
+  console.log(sub1)
+</script>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>leetCode</title>
+</head>
+  <!-- <link rel="import" href="./helloWorld.html"> -->
+<body>
+  <!-- <hello-world></hello-world>
+  <img src="https://avatars1.githubusercontent.com/u/13316317?s=88&v=4" data-src="https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_1280.jpg" alt="">
+  <img src="https://avatars1.githubusercontent.com/u/13316317?s=88&v=4" data-src="https://cdn.pixabay.com/photo/2014/08/01/00/08/pier-407252_1280.jpg" alt="">
+  <img src="https://avatars1.githubusercontent.com/u/13316317?s=88&v=4" data-src="https://cdn.pixabay.com/photo/2014/12/15/17/16/pier-569314_1280.jpg" alt="">
+  <img src="https://avatars1.githubusercontent.com/u/13316317?s=88&v=4" data-src="https://cdn.pixabay.com/photo/2010/12/13/10/09/abstract-2384_1280.jpg" alt="">
+  <img src="https://avatars1.githubusercontent.com/u/13316317?s=88&v=4" data-src="https://cdn.pixabay.com/photo/2015/10/24/11/09/drop-of-water-1004250_1280.jpg" alt=""> -->
+</body>
+</html>
+<!-- script111 leetCode-->
+<script>
+  // 1.===============================================
+  // 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+  // 你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
+  // 示例：
+  // 给定 nums = [2, 7, 11, 15], target = 9
+  // 因为 nums[0] + nums[1] = 2 + 7 = 9
+  // 所以返回 [0, 1]
+  // 方法一(对象法)=》 边存边比较)
+  // var twoSum = function(num, target) {
+  //   let res = {}
+  //   num.forEach((item, i, arr) => {
+  //     if (res[item] !== undefined) {
+  //       console.log('[res[item], i]', [res[item], i])
+  //       return [res[item], i]
+  //     } else {
+  //       res[target-item] = i
+  //     }
+  //   })
+  // }
+  // 方法二((暴力法 不推荐) =》 双for循环)
+  // var twoSum = function (num, target) {
+  //   let arr = num
+  //   for (let i = 0; i < arr.length - 1; i++) {
+  //     for (let j = 0; j < arr.length; j++) {
+  //       if (arr[i] + arr[j] === target) {
+  //         return [i, j]
+  //       }
+  //     }
+  //   }
+  // }
+  // console.log(twoSum([9, 4, 7, 11, 15, 2], 13))
+
+
+  // 2.======================================??????????==
+  //   处理链表类型数据js有点吃力，主要是缺少深度遍历的方法。
+  // 所以这种问题无非两种思路：
+  // 1、递归；2、while
+  // var addTwoNumbers = function (l1, l2) {
+  //   const sum = l1.val + l2.val;
+  //   const val = sum % 10;
+  //   const floor = Math.floor(sum / 10);
+  //   debugger
+  //   if (l1.next || l2.next) {
+  //     //这个判断有两个目的：1、即l1、l2其中有一位问null的情况，保证递归能够正常运行，实例化一个节点
+  //     //2、需要进位的情况，l1、l2存在null，进位放在实例化上，不存在则l1或者l2进位（这里选择l1）
+  //     debugger
+  //     if (!l1.next) {
+  //       l1.next = new ListNode(floor);
+  //     } else if (!l2.next) {
+  //       l2.next = new ListNode(floor);
+  //     } else {
+  //       l1.next.val = l1.next.val + floor;
+  //     }
+  //     const next = addTwoNumbers(l1.next, l2.next);
+  //     return {
+  //       val: val,
+  //       next: next
+  //     }
+  //   } else {
+  //     const next = floor ? new ListNode(floor) : null
+  //     return {
+  //       val: val,
+  //       next: next
+  //     }
+  //   }
+  // };
+  // addTwoNumbers([11], [12])
+  // ==========================================3=================
+  //   给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。
+  //    示例 1:
+  //    输入: "abcabcbb"
+  //    输出: 3 
+  //    解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+  //    示例 2:
+  //    输入: "bbbbb"
+  //    输出: 1
+  //    解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+  //    示例 3:
+  //    输入: "pwwkew"
+  //    输出: 3
+  //    解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+  //    请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+  // var lengthOfLongestSubstring = function (s) {
+  //   let str = ''
+  //   let longest = 0
+  //   for(let i=0; i<s.length;i++) {
+  //     const index = str.indexOf(s[i])
+  //     if (index < 0) {
+  //       str += s[i]
+  //     } else {
+  //       str = str.substr(index+1) + s[i]
+  //     }
+  //     if (str.length> longest) {
+  //       longest = str.length
+  //     }
+  //   }
+  //   return longest
+  // }
+  // lengthOfLongestSubstring('bbbbb')
+
+  //4 ======================================= $ajax的二次分装======
+  // export const request = (() => {
+  //   var loadingClass = '.bm-loading-bar';
+  //   var reqNums = 0;
+  //   var timer = null;
+  //   return (options, isNeedajax = true) => {
+  //     var url = options.url;
+  //     var data = options.data;
+  //     var params = options.params || {};
+  //     var method = options.method || 'GET';
+  //     var urlParams = $pamas(params);
+  //     var dataParams;
+  //     var contentType = options.contentType || undefined;
+  //     var processData = options.processData === undefined ? true : options.processData;
+  //     var ajaxParams = {
+  //       method: method
+  //     }
+  //     if (urlParams) {
+  //       urlParams = '?' + urlParams 
+  //     } else {
+  //       urlParams = ''
+  //     }
+  //     ajaxParams.url = url + urlParams;
+  //     if (method !=='GET') {
+  //       if (options.contentType === undefined) {
+  //         contentType = 'application/json; charset=UTF-8'
+  //         dataParams = data ? JSON.stringify(data): ''
+  //       } else {
+  //         contentType = options.contentType
+  //         dataParams = data
+  //       }
+  //       ajaxParams.data = dataParams
+  //       ajaxParams.contentType = contentType
+  //       ajaxParams.processData = processData
+  //     }
+  //     if (!reqNums && isNeedajax) {
+  //       // 弹出loading
+  //       u.loadingShow(loadingClass);
+  //       clearTimeout(time);
+  //       time = setTimeout(() => {
+  //         // 接口超时关闭loading
+  //         reqNums =0;
+  //         u.loadingHide(loadingClass);
+  //       }, 7000);
+  //     }
+  //     reqNums++;
+  //     return $ajax(ajaxParams)
+  //       .then(async res => {
+  //         var isGotLogin = false
+  //         // 接口返回空也要关闭loading
+  //         reqNums--;
+  //         !reqNums && isNeedajax && u.loadingHide(loadingClass); // 前两项为通过后，就说明ajax成功了，多个&&都通过就取最后一个，相当于：u.loadingHide(loadingClass)
+          
+  //         if (res && typeof res === 'string') {
+  //           try {
+  //             var status = JSON.parse(res);
+
+  //             if (status.error) {
+  //               return Promise.reject(status);
+  //             }
+  //           } catch (err) {}
+  //         }
+
+  //         // 如果登录过期了，
+  //         if (res && res.code === -9999) {
+  //           isGotLogin = await swConfirm({
+  //             title: '登录过期',
+  //             text: '是否重新登入'
+  //           })
+  //           if (isGotLogin) {
+  //             location.href = '/logout';
+  //           }
+  //           return Promise.reject('登录过期');
+  //         }
+
+  //         // 接口报错, http成功
+  //         if ((res && res.errmsg) || res.errMsg) {
+  //           if (isNeedLoading) {
+  //             swAlert({
+  //               type: 'error',
+  //               title: '服务调用失败',
+  //               text: res.errmsg || res.errMsg,
+  //             });
+  //           }
+
+  //           return Promise.reject(`接口服务错误: code - ${res.errorCode}`);
+  //         }
+
+  //         // node报错
+  //         if (res && res.error) {
+  //           return Promise.reject(res);
+  //         }
+
+  //         return res;
+  //       })
+  //       .cacth(err => {
+  //         if (err && err.error) {
+  //           console.error(`调用服务端发生错误`);
+
+  //           return Promise.reject(err);
+  //         }
+
+  //         if (err.toString() !== '[object Object]') {
+  //           return Promise.reject(err);
+  //         } else {
+  //           return Promise.reject(`接口服务错误: code - ${err.errorCode}`);
+  //         }
+  //       })
+  //   }
+  // })()
+
+
+  // 5=======================================找出最小值=============================================
+  // 题目
+  // 输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。
+  // 例：
+  // 输入数组[3，32，321],则打印出这三个数字能排成的最小数字为321323
+  // 思路
+  // a和b两个数字可以有两种组合：ab和ba，若ab<ba则ab应该排在ba前面，否则ab应该排在ba后面。
+  let arr = [3, 32, 321]
+  function PrintMinNumber(numbers) {
+      if (!numbers || numbers.length === 0) {
+        return "";
+      }
+      return numbers.sort(compare).join('');
+    }
+  function compare(a, b) {
+    const front = "" + a + b;
+    const behind = "" + b + a;
+    return front - behind;
+  }
+  console.log(PrintMinNumber(arr))
+</script>
+
+<!-- script222 awesome-coding-js   -->
+<script>
+  // A模拟实现call
+  // 1.判断当前this是否为函数，防止Function.prototype.myCall() 直接调用
+  // 2.context 为可选参数，如果不传的话默认上下文为 window
+  // 3.为context 创建一个 Symbol（保证不会重名）属性，将当前函数赋值给这个属性
+  // 4.处理参数，传入第一个参数后的其余参数
+  // 4.调用函数后即删除该Symbol属性
+  // Function.prototype.mycall = function (context = window, ...arg) {
+  //   // 用于防止 Function.prototype.myCall() 直接调用
+  //   if (this === Function.prototype) return undefined
+    
+  //   const fn = Symbol()
+  //   context[fn] = this
+  //   const result = context[fn](...arg)
+  //   delete context[fn]
+  //   return result
+  // }
+  // B模拟实现apply
+  // Function.prototype.myapply = function (context = window, arg) {
+  //   // 用于防止 Function.prototype.myapply() 直接调用
+  //   if (this === Function.prototype) return undefined
+
+  //   const fn = Symbol()
+  //   context[fn] = this
+  //   let result
+  //   if (Array.isArray(arg)) {
+  //     result = context[fn](...arg)
+  //   } else {
+  //     result = context[fn]()
+  //   }
+  //   delete context[fn]
+  //   return result
+  // }
+  // C模拟实现bind
+    // 1.处理参数，返回一个闭包
+    // 2.判断是否为构造函数调用，如果是则使用new调用当前函数
+    // 3.如果不是，使用apply，将context和处理好的参数传入
+    // Function.prototype.mybind = function (context = window, ...arg1) {
+    //   if (this === Function.prototype) return new TypeError('error')
+    //   const _this = this
+    //   return function F(...arg2) {
+    //     // 判断是否是构造函数
+    //     if (_this instanceof F) {
+    //       return new _this(...arg1, ...arg2)
+    //     }
+    //     return _this.apply(context, arg1.concat(arg2))
+    //   }
+    // }
+  
+  // D防抖
+  // function debounce(event, time, flag) {
+  //   let timer = null
+  //   return function(...arg) {
+  //     clearTimeout(timer)
+  //   // 要在第一次就执行一次 传flag为true
+  //     if (flag && !timer) {
+  //       event.apply(this, arg)
+  //     }
+
+  //     timer = setTimeout(() => {
+  //       event.apply(this, arg)
+  //     }, time)
+  //   }
+  // }
+  // debounce(console.log('11212'), 30000, false);
+
+  // F防抖节流综合版
+  // function throttle(event, time) {
+  //   let pre = 0
+  //   let timer = null
+  //   return function (...args) {
+  //     if (Date.now() - pre > time) {
+  //       clearTimeout(timer)
+  //       timer = null
+  //       pre = Date.now()
+  //       event.apply(this, args)
+  //     } else if (!timer) {
+  //       timer = setTimeout(() => {
+  //         event.apply(this, args)
+  //       }, time)
+  //     }
+  //   }
+  // }
+
+  // G原生实现深拷贝
+  // 判断是数组还是对象，分别进行拷贝
+  // function clone(target) {
+  //   if (typeof target === 'object') {
+  //     let cloneTarget
+  //     if (Array.isArray(target)) { //数组深拷贝
+  //       cloneTarget = []
+  //       for(let i = 0;i<target.length;i++) {
+  //         cloneTarget[i] = clone(target[i])
+  //       }
+  //     } else { // 对象深拷贝
+  //       cloneTarget = {}
+  //       for (let key in target) {
+  //         cloneTarget[key] = clone(target[key])
+  //       }
+  //     }
+  //     return cloneTarget
+  //   } else {
+  //     return cloneTarget
+  //   }
+  // }
+
+  // H去重1 Object
+  // let arr = [1,2,3,3,4,5,6,6]
+  // const unique = (array) => {
+  //   var container = {}
+  //   return array.filter((item, index) => container.hasOwnProperty(item) ? false : (container[item] = true))
+  // }
+  // H去重2 indexOf + filter
+  // const unique = (array) => {
+  //   return array.filter((item, index) => array.indexOf(item) === index)
+  // }
+  // H去重3 set
+  // const unique = (array) => {
+  //   return [...new Set(array)]
+  // }
+  // H去重4 排序
+  // const unique = (array) => {
+  //   array.sort((a, b) => a-b)
+  //   let pre = 0
+  //   let result = []
+  //   for(let i = 0;i<array.length;i++) {
+  //     if (!i || array[i] != array[pre]) {
+  //       result.push(array[i])
+  //     }
+  //     pre = i
+  //   }
+  //   return result
+  // }
+  // H去重5 indexOf + lastIndexOf
+  // const unique = (array) => {
+  //   return array.filter(item => array.indexOf(item) !== array.lastIndexOf(item))
+  // }
+  // console.log(unique(arr))
+
+  // I从最后一个元素开始，从数组中随机选出一个位置，交换，直到第一个元素。
+  // function disorder(array) {
+  //   const length = array.length;
+  //   let current = length - 1;
+  //   let random;
+  //   while (current >-1) {
+  //     random = Math.floor(length * Math.random());
+  //     [array[current], array[random]] = [array[random], array[current]];
+  //     current--;
+  //   }
+  //   return array;
+  // }
+  
+  // J柯里化
+  // function currying(fn, ...arg) {
+  //   if (arg.length = fn.length) {
+  //     return fn(...arg)
+  //   } else {
+  //     return (...arg2) => currying(fn, ...arg, ...arg2)
+  //   }
+  // }
+  // const curryingFun = currying(fn)
+  // curryingFun(1)(2)(3)
+  // J柯里化例子：
+  // function curryingCheck(reg) {
+  //   return function(txt) {
+  //     return reg.test(txt)
+  //   }
+  // }
+  // var hasNumber = curryingCheck(/\d+/g)
+  // var hasLetter = curryingCheck(/[a-z]+/g)
+  // hasNumber('test1')      // true
+  // hasLetter('21212')      // false
+
+  // K实现JSONP
+  // 1.将传入的data数据转化为url字符串形式
+  // 2.处理url中的回调函数
+  // 3.创建一个script标签并插入到页面中
+  // 4.挂载回调函数
+  // function Jsonp(data, url, callback) {
+  //   // 完成1 => {id:1,name:'jack'} => id=1&name=jack
+  //   let dataString = url.indexOf('?') === -1 ? '?' : '&'
+  //   for (const key in data) {
+  //     dataString += key+'='+data[key]+'&'
+  //   }
+  //   // debugger
+  //   // 2.处理url中的回调函数
+  //   let cb_funcName = 'cb_funcName' + Math.random().toString(36).slice(2) //生成不随机的值
+  //   dataString += 'callback=' + cb_funcName
+  //   // 3.创建一个script标签并插入到页面中
+  //   let script = document.createElement('script')
+  //   script.src = url + dataString
+  //   // 4.挂载回调函数
+  //   window[cb_funcName] = function(data) {
+  //     callback(data)
+  //     document.body.removeChild(script)
+  //   }
+  //   document.body.appendChild(script)
+  // }
+  // // // JSONP测试
+  // // var delBtn = document.createElement( 'input' );
+  // // delBtn.type = 'button';
+  // // delBtn.value='按钮';
+  // // delBtn.onclick = getJsonp
+  // // document.body.appendChild(delBtn)
+  // // function getJsonp() {
+  // //   Jsonp({key: 'taolin'}, 'www.baidu.com', (data) => {
+  // //     console.log(data)
+  // //   })
+  // // }
+
+    // L ES5继承
+    // function People() {
+    //   this.type = 'people'
+    // }
+    // People.eat = function() {
+    //   return this.type
+    // }
+    // function Man(name) {
+    //   this.subType = 'man'
+    // }
+    // L ES5继承 =>1原型继承 缺点： 原型是所有子类实例共享的，改变一个其他也会改变
+      // Man.prototype = new People()
+      // Man.prototype.dosoming = function() {
+      //   console.log('this.type', this.type)
+      // }
+      // var a = new Man()
+      // console.log(a.dosoming())
+    // L ES5继承 =>2构造继承 缺点：不能继承父类原型，函数在构造函数中，每个子类实例不能共享函数，浪费内存。
+      // function Man(name) {
+      //   People.call(this)
+      //   console.log(this.type) //拿到了父类的this。
+      // }
+      // Man()
+    // L ES5继承 =>组合继承 缺点：父类原型和子类原型是同一个对象，无法区分子类真正是由谁构造
+      // function Man(name) {
+      //   People.call(this);
+      // }
+      // Man.prototype = People.prototype;
+    // L ES5继承 =>寄生组合继承
+        // function Man(name) {
+        //   People.call(this)
+        // }
+        // Man.prototype = Object.create(People.prototype, {
+        //   constructor: {
+        //     value: Man
+        //   }
+        // })
+    // L ES5继承 分装继承函数
+        // function inherits(ctor, superCtor) {
+        //   var prototype = Object(superCtor);
+        //   prototype.constructor = ctor;
+        //   ctor.prototype = prototype;
+        // }
+        // function Man() {
+        //   People.call(this)
+        //   this.subType = 'man'
+        // }
+        // inherits(Man, People);
+        // Man.prototype.fun = function () {
+        //   console.log(this.subType)
+        // }
+    // M判断Object的原型是否在某个类型的原型链上 =》 a instanceof Object
+      // function myInstanceof(target, origin) {
+      //   var proto = target._proto_
+      //   if (proto) {
+      //     if (origin.prototype === proto) {
+      //       return true
+      //     } else {
+      //       return myInstanceof(protp, origin)
+      //     }
+      //   } else {
+      //     return false
+      //   }
+      // }
+
+      // N原生ajax分装为promise形式
+      // function ajax(url,method = 'get', params = {}) {
+      //   return new Promise((resolve, reject) => {
+      //     // 1实例化XMLHttpRequest
+      //     const xhr = new XMLHttpRequest()
+      //     // 2得url的拼接
+      //     let paramString = getUrlParams(params)
+      //     if (method === 'get' && paramString) {
+      //       url.indexOf('?') > -1 ? url += paramString : url += '?' + paramString
+      //     }
+      //     // open()
+      //     xhr.open(method, url)
+      //     // onload()
+      //     xhr.onload = function () {
+      //       const result = {
+      //         status: xhr.status,
+      //         statusText: xhr.statusText,
+      //         headers: xhr.getAllResponseHeaders(),
+      //         data: xhr.response || xhr.responseText
+      //       }
+      //       if ((xhr.status >= 200 && chr.status < 300) || xhr.status == 304) {
+      //         resolve(result)
+      //       } else {
+      //         reject(result)
+      //       }
+      //     }
+      //     // 设置请求头
+      //     xhr.setRequestHeader = ('Content-Type', 'application/x-www-form-urlencode')
+      //     // 跨域携带cookie
+      //     xhr.withCredentials = true
+      //     // 错误处理
+      //     xhr.onerror = function () {
+      //       reject(new TypeError('请求错误'))
+      //     }
+      //     xhr.timeout = function () {
+      //       reject(new TypeError('请求超时了'))
+      //     }
+      //     xhr.onabort = function () {
+      //       reject(new TypeError('请求被终止了'))
+      //     }
+      //     // send()
+      //     if (method === 'post') {
+      //       xhr.send(params)
+      //     } else {
+      //       xhr.send()
+      //     }
+      //   })
+      // }
+      // function getUrlParams(params) {
+      //   let dataString = '';
+      //   for (const key in param) {
+      //     dataString += `${key}=${param[key]}&`
+      //   }
+      //   return dataString;
+      // }
+
+      // O 图片懒加载(方法一) =》监听图片高度
+      // var img = document.getElementsByTagName("img");
+      // var n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+      // lazyload()
+      // function lazyload() {
+      //   var seeHeight = window.innerHeight//可见区域的高
+      //   var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+      //   for(var i = n;i < img.length;i++) {
+      //     console.log(img[i].offsetTop, seeHeight, scrollTop)
+      //     if (img[i].offsetTop < seeHeight + scrollTop) {
+      //       if (img[i].getAttribute('src') == 'https://avatars1.githubusercontent.com/u/13316317?s=88&v=4') {
+      //         img[i].src = img[i].getAttribute('data-src')
+      //       }
+      //       n = i + 1
+      //     }
+      //   }
+      // }
+      // function throttle(event, time) {
+      //   var timer = null
+      //   return function (...arg) {
+      //     if (!timer) {
+      //       timer = setTimeout(() => {
+      //         timer = null
+      //         event.apply(this, arg)
+      //       },time)
+      //     }
+      //   }
+      // }
+      // window.addEventListener('scroll', throttle(lazyload, 200))
+
+      // O 图片懒加载(方法二) =》IntersectionObserver
+      // var img = document.getElementsByTagName("img");
+      // if (IntersectionObserver) {
+      //   let lazyImageObserver = new IntersectionObserver((entries, observer) => {
+      //     entries.forEach((entry, index) => {
+      //       let lazyImage = entry.target;
+      //       // 如果元素可见
+      //       if (entry.intersectionRatio > 0) {
+      //         if (lazyImage.getAttribute("src") == "https://avatars1.githubusercontent.com/u/13316317?s=88&v=4") {
+      //           lazyImage.src = lazyImage.getAttribute("data-src");
+      //         }
+      //         lazyImageObserver.unobserve(lazyImage)
+      //       }
+      //     })
+      //   })
+      //   for (let i = 0; i < img.length; i++) {
+      //     lazyImageObserver.observe(img[i]);
+      //   }
+      // }
+</script>

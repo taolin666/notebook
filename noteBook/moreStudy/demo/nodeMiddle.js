@@ -55,7 +55,7 @@
 //     user = debug ? 'admin' : user;
 //     var reqStream = request({
 //       uri: host + req.url,
-//       encoding: null, 
+//       encoding: null,
 //       headers: {
 //         'X-BANMA-USER': user,
 //         'X-BANMA-OEMCODE': 'SMPV',

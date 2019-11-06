@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>ES6</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+  // === === == 解构 === === === ==
+// (1) es6中的结构（ 数组） 的解构
+  // A
+  // let [a, b, c] = [5, 6, 7] 注释： 5, 6, 7 对应a, b, c;
+  // B
+  // let [d, ...e] = ['李', '国', '帅'] 注释： d对应的是字符串李， e对应的是国帅
+  // C
+  // let [f = 8, g = 9] = [] 注释： f和g对应的没有找到值， 也可以设置默认值
+  //   (2) es6中的结构（ 对象） 的解构：
+  // A 官方解说： 对象的解构与数组有一个重要的不同。 数组的元素是按次序排列的， 变量的取值由它的位置决定； 而对象的属性没有次序， 变量必须与属性同名， 才能取到正确的值。
+  // Ｂ 例子：
+  // let {
+  //   aa,
+  //   bb
+  // } = {
+  //   bb: 123,
+  //   aa: 456
+  // }
+  // (3) es6中的结构（ 字符串） 的解构：
+  // A
+  // const [a, b, c, d, e, f] = 'taolin'
+  // B
+  // let {
+  //   length: len
+  // } = 'taolin' //6
+
+
+
+  // ===
+// === = 字符串扩展 === === == （1）
+  // let s = 'hello world!'
+  // s.startsWith(hello) //true 注释：判断是否在字符串的开始找到的
+  // s.endsWith('!') // true 	注释：  判断是否在字符串的结尾找到的
+  // s.includes('o') // true  注释：	判断只要存在就返回true
+  // （ 2） repeat（） 返回新字符串， 原来字符串重复的次数
+  // 例子： 'Tao lin'.repeat(2) // 'Tao linTao lin'
+  // (3) padStart() padEnd() 头部补全和尾部补全
+  // 例子: 'aa'.padStart(5, 'cd') //	cdcaa
+  // 'aa'.padEnd(7, 'cd') //	aacdcdc
+  // (4) 字符串模板
+  // 例子：
+  // let yy = 'world'
+  // let cc = `'hello ' + ${yy}` //打印cc 是 字符串'hello world'
+
+  //   ===
+//   === == 数值 === === === == （1） isNaN() //判断是否是NaN，true or false
+  // （ 2） Number.isInteger // 判断是否是整数  例： 
+  // Number.isInteger(25) //true
+  // Number.isInteger(25.0) //true
+  // （ 3） Math, sign() // 判断一个数到底是正数、负数、还是零。对于非数值
+
+  //   ===
+//   === === 函数 === === === === = （1） 给参数设置默认值
+  // let a = 4
+
+  // function f({
+  //   a = 1,
+  //   b = a + 2
+  // } = {}) { // b中默认的值中a是指向函数的a而不是全局的a
+  //   return [a, b] //[3, 5]
+  // }
+  // f(3) ===
+//   === === === 数组 === === === = （1） Array.from() 解释： 将一个类数组的对象或字符串转化为数组
+  // 例：
+  // let arrayLike = {
+  //   '0': 'a',
+  //   '1': 'b',
+  //   '2': 'c',
+  //   length: 3
+  // };
+  // let arr = Array.from(arrayLike) // ['a', 'b', 'c']
+  // 例： Array.from('hello') // ['h', 'e', 'l', 'l', 'o']
+  // 还可以有第二个参数： 类似于map的功能
+  // 例： Array.from([3, 4, 5], x => x * x) // [6, 8, 10]
+  // (2） Array.of() 解释： 用于将一组值转化为数组 例： Array.of(3, 4, 5) //[3, 4, 5]
+
+  //   （ 3） copy.Within() //在当前数组内部，将指定位置的成员复制到其他位置（会覆盖原有成员），然后返回当前数组
+  //   [1, 2, 3, 4, 5].copy.Within(0, 3) //[4,5,3,4,5]
+  //   target（ 必需）： 从该位置开始替换数据。 如果为负值， 表示倒数。 start（ 可选）： 从该位置开始读取数据， 默认为 0。 如果为负值， 表示倒数。 end（ 可选）： 到该位置前停止读取数据， 默认等于数组长度。 如果为负值， 表示倒数。(
+  //     4) find(), 解释： 必须return。 用find（） 能实现的， 用forEach（） 都能实现（ 5） fill（） 解释： fill方法使用给定值， 填充一个数组。 例：['a', 'b', 'c'].fill(
+  //     6, 1, 2) //['a', 7, 'c']
+  //   fill方法还可以接受第二个和第三个参数， 用于指定填充的起始位置和结束位置。 注意， 如果填充的类型为对象， 那么被赋值的是同一个内存地址的对象， 而不是深拷贝对象。(6) of entries()， of keys() 和 of
+  //   values() 是keys() 是对键名的遍历、 values() 是对键值的遍历， entries() 是对键值对的遍历。（ 7） includes() 以后可以不需要用indexOf（） 了 例子：[3, 4, 5]
+  //   .includes(5, -1) //true
+  //   解释： 可以有第2个参数， 意思： 数组中有倒数一位是不是5， 返回true或false
+
+  //   （ 8） A flat()[1, 2, [3, [4, 5]]].flat(2) // [1, 2, 3, 4, 5],解释：拉平多维数组，不传参则只拉平一维数组key
+  //   B flatMap()
+  //   // 相当于 [[2, 4], [3, 6], [4, 8]].flat()
+  //   [2, 3, 4].flatMap((x) => [x, x * 2])
+  //   // [2, 4, 3, 6, 4, 8]
+
+  //   ===
+//   === === === == 对象 === === === === === === === （1） 属性的简介表达法 例：
+  //   let time = 2019 / 2 / 12
+  //   let obj = {
+  //       name: '张三',
+  //       time, //相当于time： time
+  //       sayName() => {
+  //         console.log(this.name)
+  //       } //相当于sayName: function()...
+  //     }
+  //     (2) 属性名表达式： 例：['h' + 'ello']() {
+  //       console.log('hello everybody')
+  //       hello()
+
+  //       (3) 函数都有自己的name属性： 例： eat（） {}
+  //       eat.name //eat
+  //       (4) Object.assign() 合并对象 例：
+  //       obj1 = {
+  //         a: 1
+  //       }, obj2 = {
+  //         b: 2
+  //       }, obj3 = {
+  //         c: 3
+  //       }
+  //       let assignObj = Object.assign(obj1, obj2, obj3) // {a: 1, b: 2, c: 3}
+  //       可被枚举的属性
+  //       自有属性
+  //       string或者Symbol类型是可以被直接分配的
+  //         (5） ===
+//           === === === === === === == 对象的新增方法 === === === === （1） es6中判断两个数值是否全等Object.is() 方法
+  //           let [a, b, c] = [5, 6, 5] Object.is(a, b) //false
+  //           Objext.is(a, c) //true
+  //           (2） Object.assign() 解释： 对象的合并， 将源对象的所有可枚举属性， 复制到目标对象（ 浅拷贝） 例：
+  //             let a = {
+  //               'name': 'zs'
+  //             }
+  //             let b = {
+  //               'age': 18
+  //             }
+  //             Object.assign({}, a, b)
+  //             (3) Object.keys()， Object.values()， Object.entries() 例: let obj = {
+  //               aa: qq,
+  //               bb: ww
+  //             }
+  //             Object.keys(obj) //[aa, bb]
+  //             Object.values(obj) //[qq, ww]
+  //             Object.entries(obj) //[[aa, qq],[bb, ww]]
+  //             (4) Object.fromEntries() 方法是Object.entries() 的逆操作， 用于将一个键值对数组转为对象。 例：
+  //             let arr = [
+  //               ['name', 'zs'],
+  //               ['age', 18]
+  //             ]
+  //             Object.fromEntries(arr) // 	{'name': 'zs', 'age': 18} 
+  //             ===
+//             === === === === === Set和Map === === === === === === === ==
+  //             Set => 数组去重[...new Set(array)]
+  //             (0) 方法 add(), delete(), has(), clear() Set 有keys()， values()， entries() 的遍历器（ 1） 数组的map和filter遍历 例：
+  //             let set = new Set([1, 2, 3])
+  //             set = new Set([...set].map(x => x * 2)) // {2, 4, 6}
+  //             (2) 更容易实现并集， 交集， 差集
+  //             let a = new Set([1, 2, 3])
+  //             let b = new Set([2, 3, 4])
+  //             并集例： new Set([...a, ...b]) 交集例： new Set([...a].filter(x => b.has(x))) 差集例： new Set([...a].filter(x => ！b
+  //               .has(x))) Map => Map比Object更合适。 它类似于对象， 也是键值对的集合， 但是“ 键” 的范围不限于字符串， 各种类型的值（ 包括对象） 都可以当作键。
+  //             var m = new Map();
+  //             var o = {
+  //               p: "Hello World"
+  //             }; m.set(o, "content") m.get(o) // "content"
+  //             m.has(o) // true
+  //             m.delete(o) // true
+  //             m.has(o) // false
+  //             ===
+//             === === === === === === Promise === === === === === === ==
+  //             分装一个wx.request的Promise在util里的ajax.js
+  //             const ajax = function (url, data) {
+  //               return new Promise((resolve, reject) => {
+  //                 wx.request({
+  //                   url: url,
+  //                   data: data,
+  //                   header: {
+  //                     'content-type': 'application/x-www-form-urlencoded'
+  //                   }
+  //                   success: function (res) {
+  //                     if (res.status !== 200) {
+  //                       reject({
+  //                         error: '服务器忙，请稍后重试',
+  //                         code: 500
+  //                       })
+  //                       return
+  //                     }
+  //                     resolve(res.data)
+  //                   }
+  //                 })
+  //               })
+  //             }
+  //             moudle.exports = ajax
+
+  //             在某个页面调用时
+  //             const ajax = require('../../utils/ajax.js')
+  //             Page({
+  //               内部使用
+  //             }) ===
+
+</script>

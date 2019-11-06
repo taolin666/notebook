@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<style>
+  .setBorder {
+    border: 1px solid #f00;
+  }
+</style>
+<body>
+  <div id="app">
+    <list-view :source="list" @click="hanldeClick"></list-view>
+    <button>按钮</button>
+  </div>
+  <script>
+    Vue.component('list-view', {
+      props: ['source'],
+      computed: {
+        list() {
+          var list = [];
+          var tmp = [];
+          this.source.forEach((item, index) => {
+            tmp.push(item);
+
+            if(index % 3 === 2) {
+              list.push(tmp);
+              tmp = [];
+            }
+
+          });
+          
+          if(tmp.length) {
+            list.push(tmp);
+          }
+
+          return list;
+        }
+      },
+      methods: {
+        onClick() {
+          this.$emit('click')
+        }
+      },
+      template: `
+        <div>
+          <ul v-for="first in list"  class='setBorder'>
+            <li v-for="item in first">
+              <div @click="onClick">{{item}}</div>
+            </li>
+          </ul>
+        </div>
+      `
+    })
+    new Vue({
+      el: '#app',
+      data: {
+        // list: [
+        //   '1',
+        //   '2',
+        //   '3',
+        //   '4',
+        //   '5',
+        // ],
+        testList: ['1', '2'],
+        testItem: '',
+        name: '',
+        tempName: 'liguo.shuai'
+      },
+      methods: {
+        initquery () {
+          this.aaa.then(res => {
+            this.name = res.name
+            this.testItem = res.testItem
+          })
+        },
+        selectAll(num) {
+          if (num === '1') {
+            this.name = 'liguo.shuai'
+          } else if(num === '2') {
+            this.name = ''
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>
+<script>
+  // function postMessage(msg, callback) {
+  //   var requst = new XMLHttpRequest()
+  //   requst.open('POST', '/login.php')
+  //   requst.setRequestHeader('Content-Type', 'text/plain;chartset=UTF-8')
+
+  //   requst.onreadystatechange = function () {
+  //     if (requst.readyState === 4 && requst.status === 200) {
+  //       var type = request.getResponseHeader('Content-Type')
+  //       if (type.indexOf('xml') !== -1 && requst.responseXML) {
+  //         callback(request.responseXML)
+  //       } else if (type === 'application/json') {
+  //         callback(JSON.parse(request.responseText))
+  //       } else {
+  //         callback(request.responseText)
+  //       }
+  //     }
+  //   }
+  //   requst.send(msg)
+  // }
+  
+    function getJSONP(url, callback) {
+      var cbnum = 'cb' + getJSONP.count++
+      var cbname = 'getJSOP.' + cbnum
+
+      if (url.indexOf('?') === -1) {
+        url += '?jsonp=' + cbname
+      } else {
+        url += '&jsonp' + cbname
+      }
+
+      var script = document.createElement('script');
+      getJSONP[cbnum] = function(response) {
+        try {
+          callback(response)
+        }
+        finally {
+          delete getJSONP[cbnum]
+          script.parentNode.removeChild(script);
+        }
+      }
+      script.src = url;
+      document.body.appendChild(script)
+    }
+    getJSONP.count = 0
+</script>

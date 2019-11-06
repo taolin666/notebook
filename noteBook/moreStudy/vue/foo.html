@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // function foo() {
+    //   var prev = arguments[0] * arguments[0];
+    //   function bar () {
+        
+    //     bar.value = prev = prev + arguments[0] * arguments[0];
+    //     console.log('prev', prev)
+    //     return bar;
+    //   }
+    //   bar.value = prev;
+
+    //   return bar;
+    // }
+    // 实现一个o(1).value = 1; o(1)(2).value = 5; o(1)(2)(3).value的一个闭包
+    // function o() {
+    //   var p = arguments[0] * arguments[0];
+    //   function bar() {
+    //     bar.value = p = p + arguments[0] * arguments[0];
+    //     return bar;
+    //   }
+    //   bar.value = p;
+    //   return bar
+    // }
+    // function f() {
+    //   var value = arguments[0];
+
+    //   function foo() {
+    //     value += arguments[0];
+
+    //     return foo;
+    //   }
+
+    //   foo.valueOf = function () {
+    //     return value;
+    //   }
+
+    //   return foo;
+    // }
+
+
+
+
+    // function g(a) {
+    //   return function (b) {
+    //     return a + b
+    //   }
+    // }
+
+
+    // var b = 2;
+
+    // function add(a) {
+    //   return a + b;
+    // }
+
+    // var add = (() => {
+    //   var b = 2;
+    //   return function (a) {
+    //     return a + b;
+    //   }
+    // })()
+  </script>
+</body>
+</html>
+
+<script>
+//1 opacity: 0、visibility: hidden、display: none区别
+  // 1 opacity=0，该元素隐藏起来了，但不会改变页面布局，并且，如果该元素已经绑定一些事件，如click事件，那么点击该区域，也能触发点击事件的
+  // 2 visibility=hidden，该元素隐藏起来了，但不会改变页面布局，但是不会触发该元素已经绑定的事件
+  // 3 display=none，把元素隐藏起来，并且会改变页面布局，可以理解成在页面中把该元素删除掉一样
+//2 link 标签和 import 标签的区别
+  // link 属于html 标签，而 @import 是 css 提供的；
+  // 页面被加载时，link 会同时被加载，而 @import 引用的 css 会等到页面加载结束后加载；
+  // link 方式样式的权重高于 @import 的；
+  // link 可以使用 js 动态引入，@import不行；
+  // link 此没有兼容性要求，而 @import 要求 IE5 以上才能识别。
+//3 文本显示行数控制
+  // 单行
+    // overflow:hidden;
+    // text-overflow:ellipsis;
+    // white-space:nowrap;
+  // 多行
+    // overflow: hidden;
+    // text-overflow: ellipsis;        // 超出显示'...'
+    // display: -webkit-box;           // 将元素作为弹性伸缩盒子模型显示 。
+    // -webkit-line-clamp: 2;          // 用来限制在一个块元素显示的文本的行数
+    // -webkit-box-orient: vertical;   // 设置或检索伸缩盒对象的子元素的排列方式
+// 4清除浮动的方式
+  // 1、
+  // .clearfix:after {
+  //   visibility: hidden;
+  //   display: block;
+  //   font-size: 0;
+  //   content: " ";
+  //   clear: both;
+  //   height: 0;
+  // }
+  // 2、clear:both
+  // 3、overflow:hidden
+
+
+// js
+  //1 JS 的内置类型
+    // 基本数据类型：undefined null String Number Symbol boolean
+    // 引用数据类型： Array Object function
+  // 2、类型判断
+    //2-1 typeof 一般用于基本数据类型，但是不能判断Null ，可以判断function
+    //2-2 Object.prototype.toString.call() 都可以判断。柯利华例子：
+        // function isType(type) {
+        //   return function(arg) {
+        //     return Object.prototype.toString.call(arg) === `[object ${type}]`
+        //   }
+        // }
+        // let isString = isType('String')
+        // let isArray = isType('Array')
+        // let a = [123]
+        // console.log(isArray(a))
+  // 3 原型和原型链的理解
+    // 原型：每个函数都有 prototype 属性，该属性指向原型对象；使用原型对象的好处是所有对象实例共享它所包含的属性和方法。
+    // 原型链：主要解决了继承的问题；每个对象都拥有一个原型对象，通过__proto__ 指针指向其原型对象，并从中继承方法和属性，同时原型对象也可能拥有原型，这样一层一层，最终指向 null。
+  // 4执行上下文
+    // 全局执行环境——最外围的一个执行环境，在浏览器中，全局执行环境即全局对象window，因此所有全局变量和函数都可以作为window对象的属性和方法；
+    // 函数的执行环境——每一个函数都自己的执行环境，当代码执行到一个函数时，这个函数的环境就会被推入到一个环境栈中，函数执行完毕后，环境栈会将它的执行环境弹出，并将控制权返回给之前的执行环境。JavaScript代码的执行顺序便是由这一机制所控制着。
+    // 垃圾收集——当环境栈将一个执行环境弹出后，该环境便会被销毁，保存在其中的所有变量和函数定义也会随之销毁进而释放内存，这便是JavaScript的自动垃圾收集机制。而全局执行环境只有在程序退出，例如关闭网页时才会被销毁，因此对于全局变量或者全局对象的属性，一旦我们不再需要用到它们的时候，可以手动将其值设置为null来解除其引用，一旦引用被解除，它们便会脱离执行环境，以便垃圾收集器运行时将其回收，这样做能起到很好的优化内存占用的效果。
+    // 全局执行上下文 : 最顶端window
+      // 全局属性，如undefined、Infinity和NaN
+      // 全局函数，如isNaN()、parseInt()和eval()
+      // 构造函数，如Date()、RegExp()、String()、Object()和Array()
+      // 全局对象，如Math和JSON 
+  //5 闭包
+    // for (var i = 0; i< 10; i++){
+    //   setTimeout(() => {
+    //     console.log(i);
+    //     }, 1000)
+    // }
+    // 方法一、利用 setTimeout 函数的第三个参数，会作为回调函数的第一个参数传入
+      // for (var i = 0; i < 10; i++) {
+      //   setTimeout(i => {
+      //     console.log(i);
+      //   }, 1000, i)
+      // }
+    // 方法二、使用 let 变量 的特性
+      // for (let i = 0; i < 10; i++) {
+      //   setTimeout(() => {
+      //     console.log(i);
+      //   }, 1000)
+      // }
+    // 等价于
+      // for (let i = 0; i < 10; i++) {
+      //   let _i = i;// const _i = i;
+      //   setTimeout(() => {
+      //     console.log(_i);
+      //   }, 1000)
+      // }
+    // 方法三、利用函数自执行的方式，把当前 for 循环过程中的 i 传递进去，构建出块级作用域。
+      // for (var i = 0; i < 10; i++) {
+      //   (i => {
+      //     setTimeout(() => {
+      //       console.log(i);
+      //     }, 1000)
+      //   })(i)
+      // }
+  //6 this 指向的问题
+      // 6-1 指向全局对象，可以说是window
+      // 6-2 作用方法 指向调用的函数的方法
+      // 6-3 构造函数 指向 new出来的实例对象
+      // 6-4 call 和apply 第一个参数就是为this的指向
+  // 7 new 的实现原理
+    // 创建一个空对象
+    // 然后让这个空对象的__proto__指向函数的原型prototype
+    // 执行构造函数中的代码，构造函数中的this指向该对象
+    // 如果构造函数有返回值，则以该对象作为返回值。若没有return或return了基本类型，则将新对象作为返回值
+  // 8深浅拷贝
+    // 浅拷贝——如果被拷贝对象的元素是基本类型，就会拷贝出一份，并且互不影响。而如果被拷贝对象的元素是对象或者数组，就只会拷贝对象和数组的引用，此时若是在新旧对象上进行修改，都会相互影响。
+        // 数组浅拷贝：slice()、concat()
+        // 对象浅拷贝：Object.assign()、ES6的扩展运算符
+    // 深拷贝——完全的拷贝一个对象，即使嵌套了对象，两者也互相分离，修改对象的属性，也不会影响到另一个。
+    // 递归实现
+    // 可以 ：JSON.parse(JSON.stringify()) 也可以用下面的方法
+      // function clone(source) {
+      //     var target = {};
+      //     for(var i in source) {
+      //         if (source.hasOwnProperty(i)) {
+      //             if (typeof source[i] === 'object') {
+      //                 target[i] = clone(source[i]); // 如果是引用类型，则继续遍历
+      //             } else {
+      //                 target[i] = source[i];
+      //             }
+      //         }
+      //     }
+      //     return target;
+      // }
+  //9 防抖和节流的实现（简易版）
+  // 防抖 触发高频事件后n秒内函数只会执行一次，如果n秒内高频事件再次被触发，则重新计算时间
+    // funtion debounce(fn) {
+    //   // 创建一个标记用来存放定时器的返回值
+    //   let timeout = null;
+    //   return function() {
+    //       // 每次触发事件时都取消之前的延时调用方法
+    //       clearTimeout(timeout);
+    //       // 然后又创建一个新的 setTimeout, 这样就能保证 1000ms 间隔内如果重复触发就不会执行 fn 函数
+    //       timeout = setTimeout(() => {
+    //           fn.apply(this, arguments);
+    //       }, 1000);
+    //   };
+    // }
+  // 节流 高频事件触发，但在n秒内只会执行一次，所以节流会稀释函数的执行频率（可用作防止暴力点击）
+    // function throttle(fn) {
+    //   // 通过闭包保存一个标记
+    //   let canRun = true;
+    //   return function(){
+    //       // 每次开始执行函数时都先判断标记是否为 true，不为 true 则 return
+    //       if (!canRun) return;
+    //       // 上一次定时器执行完后 canRun 为 true，所以要先设置为false
+    //       canRun = false;
+    //       setTimeout(() => {
+    //           fn.apply(this, arguments);
+    //           // 最后在 setTimeout 执行完毕后再把标记设置为true(关键)表示可以执行下一次循环了。当定时器没有执行的时候标记永远是 false，在开头被 return 掉
+    //           canRun = true;
+    //       }, 1000)
+    //   }
+    // }
+  //10 ES5继承的实现
+    // 组合继承
+      // function SuperType(name) {
+      //     this.name = name;
+      //     this.colors = ['red', 'blue', 'green'];
+      // }
+      // SuperType.prototype.sayName = function() {
+      //     console.log(this.name);
+      // }
+
+      // function SubType(name, age) {
+      //     SuperType.call(this, name);
+      //     this.age = age;
+      // }
+      // SubType.prototype = new SuperType();
+      // SubType.prototype.constructor = SubType;
+
+      // SubType.prototype.sayAge = function() {
+      //     console.log(this.age);
+      // }
+  //11 JS 异步解决方案的发展历程以及优缺点
+    //  11-1 回调函数（callback）：优点：解决了同步的问题，缺点：回调地狱，不能用 try catch 捕获错误，不能 return
+    //  11-2 Promise：优点：解决了同步的问题 缺点：回调地狱，不能用 try catch 捕获错误，不能 return
+    //  11-3 Generator：优点：可以控制函数的执行，配合自动执行器 co 模块 简化了手动执行的步骤 缺点：不配合 co 函数库的话使用起来比较麻烦
+    //  11-4 async/await：优点：代码清晰，不用像 Promise 写一大堆 then 链，处理了回调地狱的问题 缺点：await 将异步代码改造成同步代码，如果多个异步操作没有依赖性而使用 await 会导致性能上的降低
+  // 12 setTimeout、Promise、Async/Await 的区别
+    // setTimeout —— setTimeout的回调函数会放到宏任务队列里，等到执行栈清空以后执行
+    // Promise —— Promise本身是同步的立即执行函数， 当在 executor 中执行resolve或者reject的时候, 此时是异步操作， 会先执行then/catch等，当主栈完成后，才会去调用resolve/reject中存放的方法执行。
+    // async/await —— async 函数返回一个 Promise 对象，当函数执行的时候，一旦遇到 await 就会先返回，等到触发的异步操作完成，再执行函数体内后面的语句。可以理解为，是让出了线程，跳出了 async 函数体。
+  //13 Promise的简单实现
+      // function myPromise(constructor) {
+      //   let self = this;
+      //   self.status = "pending"   // 定义状态改变前的初始状态
+      //   self.value = undefined;   // 定义状态为resolved的时候的状态
+      //   self.reason = undefined;  // 定义状态为rejected的时候的状态
+      //   function resolve(value) {
+      //     if(self.status === "pending") {
+      //         self.value = value;
+      //         self.status = "resolved";
+      //     }
+      //   }
+      //   function reject(reason) {
+      //     if(self.status === "pending") {
+      //         self.reason = reason;
+      //         self.status = "rejected";
+      //     }
+      //   }
+      //   // 捕获构造异常
+      //   try {
+      //     constructor(resolve,reject);
+      //   } catch(e) {
+      //     reject(e);
+      //   }
+      // }
+    // then
+      // myPromise.prototype.then = function(onFullfilled,onRejected) {
+      //   let self = this;
+      //   switch(self.status) {
+      //     case "resolved":
+      //       onFullfilled(self.value);
+      //       break;
+      //     case "rejected":
+      //       onRejected(self.reason);
+      //       break;
+      //     default:       
+      //   }
+      // }
+      // var p = new myPromise(function(resolve,reject) {
+      //     resolve(1)
+      // });
+      // p.then(function(x) {
+      //     console.log(x) // 1
+      // })
+  //14 前端模块化发展历程
+    // IIFE： 使用自执行函数来编写模块化，特点：在一个单独的函数作用域中执行代码，避免变量冲突。
+    // AMD： 使用 requireJS 来编写模块化，特点：依赖必须提前声明好。
+    // CMD： 使用 seaJS 来编写模块化，特点：对于依赖的模块是延迟执行，依赖可以就近书写，等到需要用这个依赖的时候再引入这个依赖，支持动态引入依赖文件。
+    // CommonJS： nodejs 中自带的模块化。
+    // ES Modules： ES6 引入的模块化，支持 import 来引入另一个 js 。
+  // 15 ES6 模块和 CommonJS 模块的差异？
+    // ES6模块在编译时，就能确定模块的依赖关系，以及输入和输出的变量；CommonJS 模块，运行时加载。
+    // ES6 模块自动采用严格模式，无论模块头部是否写了 "use strict";
+    // require 可以做动态加载，import 语句做不到，import 语句必须位于顶层作用域中。
+    // ES6 模块中顶层的 this 指向 undefined，CommonJS 模块的顶层 this 指向当前模块。
+    // CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+
+
+</script>

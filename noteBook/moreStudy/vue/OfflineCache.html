@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Offline cache</title>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>
+        <label for="name">用户名</label>
+      </td>
+      <td>
+        <input type="text" name="name" id="name">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="phone">电话</label>
+      </td>
+      <td>
+        <input type="text" name="phone" id="phone">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="address">地址</label>
+      </td>
+      <td>
+        <input type="text" name="address" id="address">
+      </td>
+    </tr>
+  </table>
+  <input type="button" value="添加用户" id="btnAdd" onclick="addPerson()">
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>address</th>
+        <th>phone</th>
+        <th>编辑</th>
+      </tr>
+    </thead>
+    <tbody id="tbd">
+    </tbody>
+  </table>
+</body>
+</html>
+<script src="./artTemplate//template-web.js"></script>
+<script id="tbTmpl" type="text/html">
+  <tr>
+    <td>{{id}}</td>
+    <td>{{name}}</td>
+    <td>{{phone}}</td>
+    <td>{{address}}</td>
+    <td><a href="#">修改</a>
+    <a href="#" onclick="delById({{id}})">删除</a></td>
+  </tr>
+</script>
+<script>
+    // 5 IndexDB:浏览器保存结构化数据的一种数据库
+
+    var db, dbName = 'demoDb', dbVersion = 1, personStore = 'person';
+    // 创建indexedDB对象，兼容各种浏览器
+    var indexDB = window.indexedDB || window.msIndexedDB || window.mozIndexDB || window.webkitIndexedDB
+    if (!indexDB) console.log('浏览器不支持indexedDB')
+
+    // 配合游标遍历表中数据，并配合template生成html  2================
+    function loadTableData() {
+      document.getElementById('tbd').innerHTML = ''
+      var trans = db.transaction(personStore, 'readwrite');
+      var store = trans.objectStore(personStore);
+      var cursorRequest = store.openCursor();
+      cursorRequest.onsuccess = function (e) {
+        var cursor = e.target.result
+        if (cursor) {
+          var html = template('tbTmpl', cursor.value);
+          document.getElementById('tbd').innerHTML += html;
+          cursor.continue();// 游标继续往下搜索，重复触发onsuccess方法，直到返回null
+        }
+      }
+    }
+
+    // 打开数据库 1===============================
+    function openIndexedDB(callback) {
+      // 打开一个数据库
+      var request = indexedDB.open(dbName, dbVersion);
+      // 打开失败
+      request.onerror = function (e) {
+        console.log(e.currentTarget.error.message)
+      }
+      // 打开成功
+      request.onsuccess = function (e) {
+        db = e.target.result;
+        console.log('成功打开DB')
+        callback()
+      }
+
+      // 打开成功后，如果版本有变化自动执行以下事件  1-1===============================
+      request.onupgradeneeded = function (e) {
+        var db = e.target.result;
+        if (!db.objectStoreNames.contains(personStore)) {
+          console.log('我需要创建一个新的存储对象')
+          // 如果表格不存在，创建一个新的表格（keyPath,主键；autoIncrement,是否自增)，会返回一个对象（objectStore）
+          var objectStore = db.createObjectStore(personStore, {
+            keyPath: 'id',
+            autoIncrement: true
+          })
+          // 指定可以被索引的字段，unique字段是否唯一，指定索引可以加快搜索效率
+          objectStore.createIndex('name', 'name', {
+            unique: true
+          })
+          objectStore.createIndex('phone', 'phone', {
+            unique: false
+          })
+        }
+        console.log('数据库版本更改为：' + dbVersion)
+      }
+    }
+    // 打开数据库方法执行后掉游标查询 3=========================
+    openIndexedDB(loadTableData);
+
+    // 删除
+    function delById(id) {
+      if (!db || !id) {
+        return;
+      }
+      // 创建一个事务
+      var transaction = db.transaction(personStore, 'readwrite');
+      // 通过事务拿到store
+      var store = transaction.objectStore(personStore)
+      // 删除请求
+      var delPersonRequest = store.delete(id)
+      delPersonRequest.onsuccess = function (e) {
+        loadTableData() //删除成功后重新加载数据
+      }
+      delPersonRequest.onerror = function (e) {
+        console.log(e.target.error)
+      }
+    }
+
+    // 新增
+    function addPerson() {
+      if (!db){
+        return;
+      }
+      var pName = document.getElementById('name').value;
+      var pPhone = document.getElementById('phone').value;
+      var pAddress = document.getElementById('address').value;
+      // 创建事务
+      var transaction = db.transaction(personStore, 'readwrite')
+      // 通过事务来获取store
+      var store = transaction.objectStore(personStore)
+
+      var addPersonRequest = store.add({name: pName, phone: pPhone, address: pAddress})
+      addPersonRequest.onsuccess = function (e) {
+        loadTableData() //添加成功后重新渲染数据
+      }
+      addPersonRequest.onerror = function (e) {
+        console.log(e.target.error)
+      }
+    }
+</script>
+<script>
+  // 1 判断是否离线:存在兼容性问题
+    // if (navigator.onLine) {
+    //   // has onLine do soming
+    // } else {
+    //   // offLine do soming
+    // }
+  // 2 是否离线触发事件
+    // EventUtil.addHandler(window, 'onLine', function() {
+    //   console.log('onLine')
+    // })
+    // EventUtil.addHandler(window, 'offLine', function() {
+    //   console.log('offLine')
+    // })
+
+
+  // 3  cookie 的操作： 读取， 写入， 删除
+  // 不设置时间，浏览器关闭就失效；设置时间，时间过期失效，大小：4095B(左右，因浏览器而定+1或者-1)，通常一个字符占一字节，但多个字符不同
+  // var CookieUtil = {
+  //   get: function (name) {
+  //     var cookieName = encodeURIComponent(name) + '=',
+  //     cookieStart = document.cookie.indexOf(cookieName),
+  //     // console.log('document.cookie', document.cookie)  //空字符串?不知道原因
+  //     cookieValue = null
+  //     if (cookieStart > -1){
+  //       var cookieEnd = document.cookie.indexOf(';', cookieStart);
+  //       if (cookieEnd === -1) {
+  //         cookieEnd = document.cookie.length;
+  //       }
+  //       cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd))
+  //     }
+  //     return cookieValue
+  //   },
+  //   set: function (name,value,expires,path,domain,secure) {
+  //     var cookieText = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+  //     if (expires instanceof Date) {
+  //       cookieText += '; expires=' + expires.toGMTString();
+  //     }
+  //     if (path) {
+  //       cookieText += '; path=' + path;
+  //     }
+  //     if (domain) {
+  //       cookieText += '; domain=' + domain;
+  //     }
+  //     if (secure) {
+  //       cookieText += '; secure'
+  //     }
+  //     document.cookie = cookieText;
+  //   },
+  //   unset: function (name,path,domain,secure) {
+  //     this.set(name, '', new Date(0), path, domain, secure)
+  //   }
+  // }
+
+  // CookieUtil.set('name', 'taolin')
+  // console.log(CookieUtil.get('name'))
+
+
+  // 4 sessionStorage 与localStorage用法一样，一下用sessionStorage做例子：
+  // 浏览器关闭就失效 大小：5MB
+  // 4-1写入sessionStorage
+    // sessionStorage.setItem('name', 'huangguang')
+    // sessionStorage.book = 'javascript'
+  // 4-2读取sessionStorage
+    // var name = sessionStorage.getItem('name')
+    // var book = sessionStorage.book
+    // console.log(name)
+    // console.log(book)
+  // 4-3遍历读取多个属性
+    // for(var i = 0; i<sessionStorage.length;i++) {
+    //   var key = sessionStorage.key(i)
+    //   var value = sessionStorage.getItem(key)
+    //   console.log(key + '=' + value)
+    // }
+  // 4-4删除
+      // delete sessionStorage.name //在webkit无效
+      // sessionStorage.removeItem('book')
+      // console.log(name)
+      // console.log(book)
+    // 4-5 sessionStorage.clear() //删除所有的sessionStorage
+</script>
